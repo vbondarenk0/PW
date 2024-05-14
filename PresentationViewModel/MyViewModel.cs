@@ -14,8 +14,7 @@ namespace PresentationViewModel
     public class MyViewModel : IViewModel
     {
         public ObservableCollection<BallModelAPI> ballModelAPIs { get; } = new ObservableCollection<BallModelAPI>();
-        // TODO mam takie marzenie aby czytać z ekrany wysokość tego co się dopasuje do warunków a następnie 
-        // to będzie przekazywane niżej
+
         public int HeightOfViewRectangle
         {
             get
@@ -81,13 +80,15 @@ namespace PresentationViewModel
             {
                 ballModelAPIs.Add(modelAPI);
             }
+            Debug.WriteLine($"W modelu posiadam {ballModelAPIs.Count()}, a wedlug licznika {_modelAbstractAPI._numOfBalls}");
             OnPropertyChanged();
         }
         private void StopTheSimulation()
         {
             _modelAbstractAPI.StopSimulation();
+            ballModelAPIs.Clear();
+            Debug.WriteLine($"A po usunieciu mam {ballModelAPIs.Count()}, a licznik mowi ze {_modelAbstractAPI._numOfBalls}");
             OnPropertyChanged();
-
         }
 
         public ICommand CommandAddOneToNumOfBalls { get; private set; }
@@ -101,7 +102,7 @@ namespace PresentationViewModel
         {
             ballModelAPIs = new ObservableCollection<BallModelAPI>();
             _modelAbstractAPI = ModelAbstractAPI.CreateNewModel(380, 380);
-            _modelAbstractAPI._numOfBalls = 15;
+            _modelAbstractAPI._numOfBalls = 5;
             CommandAddOneToNumOfBalls = new RelayCommand(AddOneToNumOfBalls);
             CommandSubtractOneToNumOfBalls = new RelayCommand(SubtractOneToNumOfBalls);
             CommandStartTheSimulation = new RelayCommand(StartTheSimulation);
