@@ -16,12 +16,18 @@ namespace Logic
         {
             return new LogicBoard(dataApi == null ? BoardAPI.CreateApi(370, 370) : dataApi);
         }
-        public abstract void checkBorderCollision(Object s, DataEventArgs e);
+        public abstract void checkBorderCollision(Object s, DataEventArgsAPI e);
+
+        public abstract void CheckBallCollisions(Object s, DataEventArgsAPI e);
 
         public abstract void removeBalls();
 
         public abstract void startMoving();
 
+        public abstract int GetHeight();
+        public abstract int GetWidth();
+        public abstract void SetWidth(int width);
+        public abstract void SetHeight(int height);
         protected bool isMoving;
     }
 }
