@@ -4,5 +4,5 @@
 
 | Name Surname (initials) | GUID                                     |
 | ----------------------- | ---------------------------------------- |
-| Valentyn Bondarenko     | `{42C2FB0B-25FB-4EFE-A766-DBB09E51E60A}` |
-| Oleksandr Tropets       | `{BC1FB934-B035-472E-9F2F-1A32398E1748}` |****
+| Valentyn Bondarenko     | `{293C74F8-34EF-4D1D-A049-D8CE50A0146D}` |
+| Oleksandr Tropets       | `{4F00F331-0AF5-4D9B-8E0A-21944F987423}` |****
