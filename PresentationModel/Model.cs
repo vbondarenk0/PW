@@ -11,27 +11,27 @@ namespace PresentationModel
     {
         public Model(int w, int h)
         {
-            height = h;
-            width = w;
-            logicAPI = LogicBoardAPI.CreateAPI();
-            ballsModel = new List<BallModelAPI>();
+            _height = h;
+            _width = w;
+            _logicAPI = LogicBoardAPI.CreateAPI();
+            _ballsModel = new List<BallModelAPI>();
         }
 
         public override List<BallModelAPI> GetBallsModel()
         {
-            return ballsModel;
+            return _ballsModel;
         }
 
         public override void StartSimulation()
         {
-            logicAPI.addBalls(_numOfBalls, 20);
-            foreach (LogicBallAPI logicBall in logicAPI.getBalls())
+            _logicAPI.addBalls(_numOfBalls, 20);
+            foreach (LogicBallAPI logicBall in _logicAPI.getBalls())
             {
                 BallModelAPI ballModelAPI = BallModelAPI.CreateBallModel(logicBall);
                 logicBall.changedPosition += ballModelAPI.UpdateBallModel;
-                ballsModel.Add(ballModelAPI);
+                _ballsModel.Add(ballModelAPI);
             }
-            logicAPI.startMoving();
+            _logicAPI.startMoving();
 
 
         }
@@ -39,8 +39,8 @@ namespace PresentationModel
         public override void StopSimulation()
         {
 
-            logicAPI.removeBalls();
-            ballsModel.Clear();
+            _logicAPI.removeBalls();
+            _ballsModel.Clear();
 
         }
 

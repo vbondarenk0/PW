@@ -3,74 +3,90 @@ using System.Numerics;
 
 namespace Data
 {
-    public class Ball : BallAPI
+    internal class Ball : BallAPI
     {
-        private Vector2 position { get; set; }
-        private Vector2 speed { get; set; }
-        private int r { get; set; }
+        private Vector2 _position { get; set; }
+        private Vector2 _speed { get; set; }
+        private int _r { get; set; }
+        private int _m { get; }
+        public override bool _isMoving { get; set; }
 
-        private int maxX = 370;
-        private int maxY = 370;
+        public override int Mass { get { return _m; } }
+
+        private static object _lockObject = new object();
 
         public override Vector2 getPosition()
         {
-            return position;
+            return _position;
         }
-        public override void setPosition(float x, float y)
-        {
-            position = new Vector2(x, y);
-        }
+
         public override Vector2 getSpeed()
         {
-            return speed;
+            return _speed;
         }
 
         public override void setSpeed(float x, float y)
         {
-            speed = new Vector2(x, y);
+            _speed = new Vector2(x, y);
         }
 
         public override int getR()
         {
-            return r;
+            return _r;
         }
-        public override event EventHandler<DataEventArgs> ChangedPosition;
+        public override event EventHandler<DataEventArgsAPI> ChangedPosition;
 
         public Ball(Vector2 position, int r, Vector2 speed)
         {
-            this.speed = speed;
-            this.position = position;
-            this.r = r;
+            _m = 5;
+            _speed = speed;
+            _position = position;
+            _r = r;
+            Thread thread = new Thread(StartMoving);
+            thread.Start();
+            _isMoving = true;
         }
         public Ball(Vector2 position, int r)
         {
-            speed = Vector2.Zero;
-            this.position = position;
-            this.r = r;
+            _speed = Vector2.Zero;
+            _position = position;
+            _r = r;
         }
 
-        public override void MakeMove(int width, int height)
+        private void MakeMove()
         // (0, 350), (0,350)
-
         {
-            bool isCorrectInX = (this.getPosition().X + this.getR() + this.getSpeed().X < maxX /*- 2 * getR()*/) && (this.getPosition().X + this.getSpeed().X /*- this.getR()*/ > 0);
-            bool isCorrectInY = (this.getPosition().Y + this.getR() + this.getSpeed().Y < maxY /*- 2 * getR()*/) && (this.getPosition().Y + this.getSpeed().Y /*- this.getR()*/ > 0);
-            if (!isCorrectInX)
+            Monitor.Enter(_lockObject);
+            try
             {
-                this.setSpeed(-this.getSpeed().X, this.getSpeed().Y);
-
+                DataEventArgs args = new DataEventArgs(this);
+                ChangedPosition?.Invoke(this, args);
+                _position += _speed;
             }
-            if (!isCorrectInY)
+            catch (SynchronizationLockException exception)
             {
-                this.setSpeed(this.getSpeed().X, -this.getSpeed().Y);
-
+                throw new Exception("Sync of monitor in Ball not working", exception);
             }
-
-            position += speed;
-            DataEventArgs args = new DataEventArgs(this);
-            ChangedPosition?.Invoke(this, args);
-
+            finally
+            {
+                Monitor.Exit(_lockObject);
+            }
         }
 
+        private void StartMoving()
+        {
+            while (_isMoving)
+            {
+                Thread.Sleep(10);
+                MakeMove();
+            }
+        }
+
+
+
+        public override object GetLockedObject()
+        {
+            return _lockObject;
+        }
     }
 }
