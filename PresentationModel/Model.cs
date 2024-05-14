@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PresentationModel
 {
-    public class Model : ModelAbstractAPI
+    internal class Model : ModelAbstractAPI
     {
         public Model(int w, int h)
         {
@@ -19,6 +19,15 @@ namespace PresentationModel
 
         public override List<BallModelAPI> GetBallsModel()
         {
+            //_ballsModel.Clear();    //Na wszelki wypadke
+            //foreach (LogicBallAPI logicBall in _logicAPI.getBalls())
+            //{
+            //    BallModelAPI ballModel = BallModelAPI.CreateBallModel(logicBall.X, logicBall.Y, logicBall.R);
+            //    _ballsModel.Add(ballModel);
+            //    logicBall.changedPosition += ballModel.UpdateBallModel!;
+            //}
+            //return _ballsModel;
+
             return _ballsModel;
         }
 
@@ -31,20 +40,38 @@ namespace PresentationModel
                 logicBall.changedPosition += ballModelAPI.UpdateBallModel;
                 _ballsModel.Add(ballModelAPI);
             }
-            _logicAPI.startMoving();
+            //_logicAPI.startMoving();
 
 
         }
 
         public override void StopSimulation()
         {
-
             _logicAPI.removeBalls();
             _ballsModel.Clear();
-
+            //_numOfBalls = 0;
         }
 
 
 
     }
 }
+
+
+
+
+//TO SIE MOZE JESZCZE PRZYDA
+//Debug.WriteLine($"MODEL stowrzyłem kulke w ilosc {_ballsModel.Count}");
+
+/* Task.Run(() =>
+ {
+     while (true)
+     {
+         //NumOfBalls = r.Next().ToString();
+         Debug.WriteLine($"Kule w model : {_ballsModel.Count}");
+         //Debug.WriteLine($"pierwsza kula ma takie  : x{_ballsModel[0].X}");
+         //_ballsModel[0].X -= 10;
+
+         Thread.Sleep(1000);
+     }
+ });*/
