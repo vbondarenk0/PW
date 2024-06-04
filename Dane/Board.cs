@@ -35,8 +35,9 @@ namespace Data
         {
             foreach (BallAPI ball in Balls)
             {
-                ball._isMoving = false;
+                ball.IsMoving = false;
             }
+
             Balls.Clear();
             Debug.WriteLine($"Według DataBoardAPI po usunieciu kuli jest {Balls.Count}");
         }

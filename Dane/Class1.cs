@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public abstract class DataEventArgsAPI
+    public abstract class DataEventArgsAPI : EventArgs
     {
-        public static DataEventArgsAPI CreateDataEventArgs(BallAPI ball)
+        public PositionOfBall positionOfBall;
+        public SpeedOfBall speedOfBall;
+        public int radius;
+
+        public static DataEventArgsAPI CreateDataEventArgs(PositionOfBall positionOfBall, SpeedOfBall speedOfBall, int radius)
         {
-            return new DataEventArgs(ball);
+            return new DataEventArgs(positionOfBall, speedOfBall, radius);
         }
     }
 }
